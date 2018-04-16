@@ -1,0 +1,167 @@
+0.  I already install npm install / In order to  start this development going on, I  need to just run asf.
+~/ethereum2/ReduxSimpleStarter$ npm start
+#and open  atom and going on the programming.
+
+1/
+~/ethereum2$ git clone https://github.com/StephenGrider/ReduxSimpleStarter.git
+~/ethereum2$ cd Redux*
+~/ethereum2/ReduxSimpleStarter$ npm install
+~/ethereum2$ npm start  -- now I excuted : ~/ethereum2/ReduxSimpleStarter$ npm start
+2.
+#in webbrowser : localhost:8080
+#open atom with ~/ethereum2/ReduxSimpleStarter directory : following command do this..!
+~/ethereum2/ReduxSimpleStarter$ atom .
+#in index.html, <script src="/bundle.js"></script>, webpack/babel put all js files such as
+index.js, app.js together in bundle.js
+3.
+index.js:
+const App = function() {
+  return <div>Hi!</div>;  //refer to jsx(jscript dialect, enable write htlm in jscript )
+}
+-app.js change <div> my new phrase </div> , and see localhost:8080
+
+-delete src dir, and make new src dir with new file, index.js of blank contents, which show no output
+in localhost:8080 ## but still previous contents, so I  rerun $npm start,  voila - no contents shown in web
+
+4_1. codepen: https://codepen.io/pen?&editors=0010
+4. http://babeljs.io/
+in left panel  of this windows, type in : <div></div> -envetually produce  :
+React.createElement("div", null);
+
+--instead of class, pass instance: In left panel->
+const App = function() {
+  return <div>Hi!</div>
+}
+
+<App /> //this is  instance same as <App></App>
+- ReactDOM.render(<App/>, document.querySelector(.container));
+
+# react consists of components(func, obj which return HTML), so
+#we have different component with diff functions(featuers of page)
+#react render multi components simultaneously, which makes faster.
+-- one screen component for one file(_.js)
+4. cosole.developers.google.com
+-right panel/ APIs & Services / Dashboard + ENABLE APIS AND SERVICES- click!
+- type (youtube) in search box:
+- click : Youbtube Data API v3 / click ! (ENABLE)/ click ! Credentials
+in left panel / /click Create credentials expand button in Credentials
+- and choose API key(lecture insist to choose browser key, but actually
+no choose option: )
+API key created
+Use this key in your application by passing it with the key=API_KEY parameter.
+Your API key:
+- API key 2: AIzaSyCTWQ0-1tjXMJ-VWYDLnl5EiHwwNkvCIHo
+#--save : please save this to package.json file,  which list all  the  dependencies of file
+~/ethereum2/ReduxSimpleStarter$ npm install --save youtube-api-search
+
+**es6 : class, =>, import, export
+# in search_bar.js: import React, { Component } from 'react';
+#->{ } means in react, pull off property, "Component"
+//5 conduct new search ->set the new result of search  to new state
+
+- To pass data from parent compoent App to child component VideoList,
+<VideoList videos = {this.state.vidoes}/>
+
+6. -------- functional component : props  is argument :
+#react is downward component: parent component is responsible for fetching
+#data.
+const VideoList = (props) => {  //props come as argument
+  return (
+    <ul className="col-md-4 list-group">
+      {props.videos.length}
+    </ul>
+  );
+};
+
+7.----------- class  base component : props are available anywhere method we define.
+
+class App extends Component {
+... render() {
+     this.props
+-------------end  of 7 --------
+
+########## before running localhost:8080 do : ~/ethereum2/ReduxSimpleStarter$ npm start ################
+7-1. Warning:Each child(video in video_list_item) in an array or
+iterator (videos in video_list) shd have a unique "key" props :
+=> chrome / devTool/ Network/Search?part=snippet&key/ontag
+, items - 0, 1, 2, ...
+=> in video_list.js
+const VideoList = (props) => {
+  const videoItems = props.videos.map((video) => {
+   return <VideoListItem key={video.etag} />
+  });
+  return (
+    <ul className="col-md-4 list-group">
+      <videoItems>
+    </ul>
+  );
+};
+
+7-2. in video_list_item.js
+props, video is transferred from video_list.js ->
+return videoItems = props.videos.map((vidie) => {
+  return <VideoListItem key={video.etag} video={video} />
+});
+return (.. {videoItems}..);
+
+
+8-1.in video_details.js
+const VideoDetail = ({video}) => {
+  const videoId = video.id.videoId;
+  const url = `https://www.youtube.com/embed/${videoId}`;
+  ...
+}  #same as 'https://www.youtube.com/embed/'+videoId;
+8-9. in index.js
+import VideoDetail from './components/video_detail';
+#need to pass video to VideoDetail component ->
+suppose pass first video: <VideoDetail video={this.state.videos[0]} />
+8. chrome/network/search?part=snipp../
+
+- snippet object
+
+---------error after vodeo_detail  coded with import this module in index.js
+error: Cannot read property 'id' of undefined(reason: some parent object can't fetch information
+fast enough to satisfy child  object
+- in vodeo_dettail.js, check
+###### need check  module asf #####
+## make  sure video has beeen provided on props before attempt to render
+---- code ------
+const VideoDetail = ({video}) => {
+ if(!video) {
+   return <div>Loading...</div>;
+}
+	const videoId = video.id.vidoeId;
+	const url = `https://www.youtube....
+
+---- code-------
+
+
+So, need to  work in index.js
+videoId : BuF05UWgji0
+so,https://www.youtube.com/embed/BuF05UWgji0  video shown in webpage
+
+after change className ->  class :  main page mov shown.  !!
+
+----------phase 3 ------- threshold for  type in search keyword in box
+to reflect the search  result.----
+# install in ~/ethereum2/ReduxSimpleStarter$ npm install --save lodash
+### debounde according to threshold(trhorttle) , searchterm  changed everry 300m sec.
+<SearchBar onSearchTermChange={term =>  this.videoSearch(term)} />
+-->
+const videoSearch = _.debounce((term) => { this.videoSearch(term) }, 300);
+    return (
+      <div>
+        <SearchBar onSearchTermChange={videoSrarch}/>
+
+--- wrap up for react lecture --------------
+1. index.js ( App extends component ) - class based component : maintain state concept.(state changedd)
+2. video_list.js, video_detail.js... - functional component : take some number of properties(props) and
+return  some amount  of  static  jsx asf(so nothing changed, always same)
+   - const VideoList = (props) => {
+     const videoItems = props.videos.map((video) => {
+      return (
+      <VideoListItem
+        onVideoSelect = {props.onVideoSelect}
+        key={video.etag}
+        video={video} />
+    );
