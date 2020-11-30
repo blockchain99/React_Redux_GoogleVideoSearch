@@ -9,7 +9,7 @@ import YTSearch from 'youtube-api-search';
 import SearchBar from './components/search_bar';
 import VideoList  from './components/video_list';
 import VideoDetail  from './components/video_detail';
-const API_KEY = 'AIzaSyCTWQ0-1tjXMJ-VWYDLnl5EiHwwNkvCIHo';
+const API_KEY = 'my_api_key';
 
 /*  //4
 //configuration function: search term , callback function
